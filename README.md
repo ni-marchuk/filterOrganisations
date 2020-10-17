@@ -1,6 +1,4 @@
-# bml-front
-
-> My well-made Nuxt.js project
+# filterOrganisations
 
 ## Build Setup
 
