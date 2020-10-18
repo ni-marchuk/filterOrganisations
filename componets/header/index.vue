@@ -1,8 +1,16 @@
 <template>
     <header class="header">
-        <p>header</p>
+        <div class="header__wrapper">
+            <ul class="header__menu">
+                <li class="header__menuItem">
+                    <nuxt-link :to="'/'">Home</nuxt-link>
+                </li>
+                <li class="header__menuItem">
+                    <nuxt-link :to="'about'">About</nuxt-link>
+                </li>
+            </ul>
+        </div>
     </header>
-
 </template>
 
 <script>
@@ -15,12 +23,34 @@
 
 <style lang="scss">
     .header {
-        &__top {
+
+        &__wrapper {
+
+        }
+
+        &__menu {
+            display: flex;
+            list-style: none;
             margin-bottom: 20px;
+            background: #347c99;
         }
 
-        &__bottom {
+        &__menuItem {
+            padding: 10px 30px;
+            width: auto;
 
+            text-align: center;
+
+            &:hover {
+                background: #327491;
+            }
+
+            a {
+                font-size: 18px;
+                text-decoration: none;
+                color: white;
+            }
         }
+
     }
 </style>

@@ -1,9 +1,11 @@
 <template>
     <div class="container">
         <div class="main" v-if="headers && organisations">
-            <filterComponent :filterOptions='headers'
+            <filterComponent class="main__filter"
+                             :filterOptions='Object.values(headers)'
                              @applyFilter="applyFilter"/>
-            <tableComponent :headers='headers'
+            <tableComponent class="main__table"
+                            :headers='Object.values(headers)'
                             :data='organisations'/>
         </div>
     </div>
@@ -14,7 +16,6 @@
     import TableComponent from '../componets/tableComponent/index'
 
     export default {
-
         name: 'Index',
         components: {
             FilterComponent,
@@ -23,29 +24,18 @@
 
         async asyncData({app, route, store}) {
 
-            let headers = [
-                'Идентификационный номер',
-                'Федеральный орган',
-                'Наименование организации',
-                'Уровень бюджета',
-                'ИНН',
-                'КПП',
-                'Статус',
-            ];
+            let headers = {
+                id: 'Идентификационный номер',
+                headName: 'Федеральный орган',
+                title: 'Наименование организации',
+                budgetLvl: 'Уровень бюджета',
+                inn: 'ИНН',
+                kpp: 'КПП',
+                egrulStatus: 'Статус',
+            };
 
             await store.dispatch('getOrganisations');
-
-            const renderOrganisations = await store.getters.ORGANISATIONS.map((item, index) => ({
-                id: item.id,
-                headName: item.bk.head_name,
-                title: item.title,
-                budgetLvl: item.budget_level,
-                inn: item.inn,
-                kpp: item.kpp,
-                egrulStatus: item.egrul_status,
-            }));
-
-            await store.commit('RENDER_ORGANISATIONS', renderOrganisations);
+            await store.commit('RENDER_ORGANISATIONS');
 
             return {headers}
         },
@@ -57,13 +47,14 @@
         },
 
         methods: {
-            applyFilter(filterItem, filterData) {
-                let y = 'id';
-                let x = '55';
-                const regexp = new RegExp(x, 'i');
-                let filteredOrganisations = this.$store.getters.RENDER_ORGANISATIONS.filter(x => regexp.test(x[String(y)]));
-                console.log(filteredOrganisations);
-                this.$store.commit('RENDER_ORGANISATIONS', filteredOrganisations);
+            applyFilter(filterIndexItem, filterData, isStrict) {
+                this.$store.dispatch('resetFilter');
+                if (filterIndexItem > 0) {
+                    const filterName = String(Object.keys(this.headers)[Number(filterIndexItem) - 1]);
+                    const regexp = new RegExp(filterData, 'i');
+                    let filteredOrganisations = this.$store.getters.RENDER_ORGANISATIONS.filter(x => regexp.test(x[filterName]));
+                    this.$store.commit('RENDER_ORGANISATIONS', filteredOrganisations);
+                }
             }
         },
 
@@ -77,12 +68,21 @@
         min-height: 100vh;
         display: flex;
         justify-content: center;
-        align-items: center;
         text-align: center;
     }
 
     .main {
         display: flex;
         flex-direction: column;
+
+        &__filter {
+            padding: 0 25px 20px 5px;
+        }
+
+        &__table {
+            -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
+            -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.44);
+        }
     }
 </style>

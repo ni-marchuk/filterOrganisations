@@ -4,7 +4,7 @@
         <div class="filteComponent__inner">
             <select class="filteComponent__select" v-model="filterItemIndex">
                 <option class="filteComponent__selectOption default"
-                        :value="0">Исходное состояние
+                        :value="0">Сбросить фильтр
                 </option>
                 <option v-for="(option,index) in filterOptions"
                         class="filteComponent__selectOption" :value="index + 1">{{option}}
@@ -51,24 +51,34 @@
         display: flex;
         flex-direction: column;
 
-        padding: 20px 0;
-
         &__title {
             padding-bottom: 10px;
+
+            font-weight: bold;
+            color: #347c99;
         }
 
         &__inner {
             display: flex;
         }
 
-        &__apply {
+        &__selectOption.default {
+            background: #f1f1f1;
+        }
 
-            padding: 5px;
+        &__input {
+            margin: 0 10px;
+        }
+
+        &__apply {
+            padding: 10px 15px;
 
             border: none;
+            border-radius: 5px;
             color: white;
             background: #347c99;
 
         }
+
     }
 </style>

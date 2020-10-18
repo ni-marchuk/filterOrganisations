@@ -19,7 +19,18 @@ export const mutations = {
     },
 
     RENDER_ORGANISATIONS(state, renderOrganisations) {
-        state.RENDER_ORGANISATIONS = renderOrganisations;
+        state.RENDER_ORGANISATIONS = state.ORGANISATIONS.map((item, index) => ({
+            id: item.id,
+            headName: item.bk.head_name,
+            title: item.title,
+            budgetLvl: item.budget_level,
+            inn: item.inn,
+            kpp: item.kpp,
+            egrulStatus: item.egrul_status,
+        }));
+        if (renderOrganisations) {
+            state.RENDER_ORGANISATIONS = renderOrganisations;
+        }
     },
 
 };
@@ -36,6 +47,10 @@ export const actions = {
         } catch (err) {
             console.log('organisations' + err)
         }
+    },
+
+    async resetFilter({state, commit}) {
+        commit('RENDER_ORGANISATIONS');
     },
 
 };
