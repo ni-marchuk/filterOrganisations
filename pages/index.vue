@@ -24,6 +24,8 @@
 
         async asyncData({app, route, store}) {
 
+            //Дублируется структура из store.
+
             let headers = {
                 id: 'Идентификационный номер',
                 headName: 'Федеральный орган',
@@ -51,8 +53,13 @@
                 this.$store.dispatch('resetFilter');
                 if (filterIndexItem > 0) {
                     const filterName = String(Object.keys(this.headers)[Number(filterIndexItem) - 1]);
-                    const regexp = new RegExp(filterData, 'i');
-                    let filteredOrganisations = this.$store.getters.RENDER_ORGANISATIONS.filter(x => regexp.test(x[filterName]));
+                    let filteredOrganisations;
+                    if (isStrict) {
+                        filteredOrganisations = this.$store.getters.RENDER_ORGANISATIONS.filter(x => String(x[filterName]) === String(filterData));
+                    } else {
+                        const regexp = new RegExp(filterData, 'i');
+                        filteredOrganisations = this.$store.getters.RENDER_ORGANISATIONS.filter(x => regexp.test(x[filterName]));
+                    }
                     this.$store.commit('RENDER_ORGANISATIONS', filteredOrganisations);
                 }
             }
