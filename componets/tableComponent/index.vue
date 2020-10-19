@@ -6,9 +6,15 @@
                 <th v-for="head in headers">{{head}}</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody v-if="data.length > 0">
             <tr v-for="(item,index) in data">
                 <td v-for="subItem in item">{{subItem}}</td>
+            </tr>
+            </tbody>
+            <tbody v-else
+                   class="tableComponent__tbody message">
+            <tr>
+                <td>Данные отсутствуют</td>
             </tr>
             </tbody>
         </table>
@@ -40,6 +46,11 @@
     .tableComponent {
         display: flex;
 
+        &__tbody.message {
+            padding-left: 5px;
+            padding-right: 25px;
+        }
+
         table {
             width: 100%;
 
@@ -51,9 +62,9 @@
 
             thead {
                 tr {
-                    background: none!important;
-                    padding: 0 20px 0 0!important;
-                    word-wrap:break-word;
+                    background: none !important;
+                    padding: 0 20px 0 0 !important;
+                    word-wrap: break-word;
                 }
             }
 
